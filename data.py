@@ -60,8 +60,8 @@ def raw_data(raw_accel_data, raw_gyro_data):
 
         print("********************")
         # resample both dataframes to a frequency of 100ms
-        df_acc_resampled = accel_data.resample("100ms").mean(numeric_only=True)
-        df_gyro_resampled = gyro_data.resample("100ms").mean(numeric_only=True)
+        df_acc_resampled = accel_data.resample("100ms").mean()
+        df_gyro_resampled = gyro_data.resample("100ms").mean()
 
         # merge the two resampled dataframes using the closest timestamp
         df_combined = pd.merge_asof(df_acc_resampled, df_gyro_resampled, on="timestamp")
@@ -79,6 +79,10 @@ def raw_data(raw_accel_data, raw_gyro_data):
         result = pd.concat(
             [combined_timestamps, data_label, interpolated_values], axis=1
         )
+
+
+        result = result.drop(result.index[range(20)]).reset_index(drop=True)
+        result = result[:len(result)-20]
 
         print(result)
 
