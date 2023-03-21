@@ -84,10 +84,14 @@ def raw_data(raw_accel_data, raw_gyro_data):
         result = result.drop(result.index[range(20)]).reset_index(drop=True)
         result = result[:len(result)-20]
 
-        print(result)
+        # print(result)
 
-        print(combined_data)
+        # print(combined_data)
         combined_data = pd.concat([combined_data, result], ignore_index=True)
+        
+        combined_data['timestamp'] = np.arange(0, (len(combined_data))*100, 100)
+        print(np.shape(combined_data))
+        # print(np.shape(timestamps))
 
         # print(result)
         # print(np.array(result))
@@ -96,7 +100,7 @@ def raw_data(raw_accel_data, raw_gyro_data):
 
     print(combined_data)
 
-    # result.to_csv('./combined_data.csv', index = False)
+    # combined_data.to_csv('./combined_data.csv', index = False)
 
 
 def produce_graph_for_interpolated_data(df):
