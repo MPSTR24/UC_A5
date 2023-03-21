@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def raw_data(raw_accel_data, raw_gyro_data):
-
+    
     """ 
     combine the accelerometer and gyroscope data for activities and resampling to a frequency of every 100ms
     also interpolating any missing values from the sensors 
@@ -52,8 +52,8 @@ def raw_data(raw_accel_data, raw_gyro_data):
 
         print("********************")
         # resample both dataframes to a frequency of 100ms
-        df_acc_resampled = accel_data.resample('100ms').mean()
-        df_gyro_resampled = gyro_data.resample('100ms').mean()
+        df_acc_resampled = accel_data.resample('100ms').mean(numeric_only=True)
+        df_gyro_resampled = gyro_data.resample('100ms').mean(numeric_only=True)
 
         # merge the two resampled dataframes using the closest timestamp
         df_combined = pd.merge_asof(df_acc_resampled, df_gyro_resampled, on='timestamp')
@@ -70,7 +70,8 @@ def raw_data(raw_accel_data, raw_gyro_data):
         print(result)
 
 
-        combined_data = combined_data.concat(result)
+        print(combined_data)
+        combined_data = pd.concat([combined_data, result], ignore_index=True)
 
         # print(result)
         # print(np.array(result))
