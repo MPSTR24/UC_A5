@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def raw_data(accel_data, gyro_data):
+def raw_data(raw_accel_data, raw_gyro_data):
 
     """ 
     combine the accelerometer and gyroscope data for activities and resampling to a frequency of every 100ms
@@ -13,24 +13,28 @@ def raw_data(accel_data, gyro_data):
     """
 
     # rename axis so there is no clash when joining tables
-    accel_data = accel_data.rename(columns={"x": "ax", "y": "ay", "z": "az"})
-    gyro_data = gyro_data.rename(columns={"x": "gx", "y": "gy", "z": "gz"})
+    raw_accel_data = raw_accel_data.rename(columns={"x": "ax", "y": "ay", "z": "az"})
+    raw_gyro_data = raw_gyro_data.rename(columns={"x": "gx", "y": "gy", "z": "gz"})
 
 
     combined_data = pd.DataFrame(columns = ["timestamp", "label", "ax", "ay", "az", "gx", "gy", "gz"])
 
     # get individual recordings and loop over them
-    session_id = accel_data['session_id'].unique()
+    session_id = raw_accel_data['session_id'].unique()
     for i in range(len(session_id)):
 
+        print(i)
+
         current_session_id = session_id[i]
-        label = accel_data['label'].unique()
+        label = raw_accel_data['label'].unique()
 
         # print(current_session_id)
         # print(label[0])
 
-        accel_data = accel_data.loc[accel_data['session_id'] == session_id[i]]
-        gyro_data= gyro_data.loc[gyro_data['session_id'] == session_id[i]]
+        accel_data = raw_accel_data.loc[raw_accel_data['session_id'] == session_id[i]].reset_index(drop=True)
+        gyro_data = raw_gyro_data.loc[raw_gyro_data['session_id'] == session_id[i]].reset_index(drop=True)
+
+        print(accel_data.head(50))
 
         # print(accel_data.head(50))
 
@@ -43,8 +47,8 @@ def raw_data(accel_data, gyro_data):
         accel_data.set_index('timestamp', inplace=True)
         gyro_data.set_index('timestamp', inplace=True)
 
-        print(accel_data)
-        print(gyro_data)
+        # print(accel_data['session_id'].unique())
+        # print(gyro_data)
 
         print("********************")
         # resample both dataframes to a frequency of 100ms
@@ -66,7 +70,7 @@ def raw_data(accel_data, gyro_data):
         print(result)
 
 
-        # combined_data = combined_data.concat(result)
+        combined_data = combined_data.concat(result)
 
         # print(result)
         # print(np.array(result))
@@ -134,8 +138,8 @@ def main():
     accel_data = pd.read_excel(os.path.join(DATA_PATH, 'accelerometer.xlsx'))
     gyro_data = pd.read_excel(os.path.join(DATA_PATH, 'gyroscope.xlsx'))
 
-    produce_raw_data_graph(accel_data, "Accelerometer")
-    produce_raw_data_graph(gyro_data, "Gyroscope")
+    # produce_raw_data_graph(accel_data, "Accelerometer")
+    # produce_raw_data_graph(gyro_data, "Gyroscope")
 
     raw_data(accel_data, gyro_data)
 
