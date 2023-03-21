@@ -92,7 +92,7 @@ def raw_data(raw_accel_data, raw_gyro_data):
         # print(result)
         # print(np.array(result))
 
-    produce_graph_for_interpolated_data(result)
+    produce_graph_for_interpolated_data(combined_data)
 
     print(combined_data)
 
