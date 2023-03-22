@@ -4,7 +4,7 @@ import os
 from sktime.datasets._data_io import write_ndarray_to_tsfile
 
 
-def create_ts_file(path_to_save):   
+def create_dataset(path_to_save):   
     CURRENT_PATH = os.getcwd()
     DATA_DIR = os.path.join(CURRENT_PATH, "data_instances")
 
@@ -54,7 +54,7 @@ def main():
 
 
 
-    create_ts_file(path_to_save=path_to_save)
+    create_dataset(path_to_save=path_to_save)
 
     
 
