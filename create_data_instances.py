@@ -84,8 +84,9 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
             print(j, j+segment_size)
             segment = result.iloc[j:j+segment_size]
 
-            segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
-            instance_num += 1
+            if np.shape(segment) == (20, 8):
+                segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
+                instance_num += 1
 
         print("session finished " + str(i))
         print("***************************")
@@ -119,6 +120,7 @@ def main():
         os.makedirs(DATA_INSTANCE_PATH)
 
     for activity in os.listdir(DATA_PATH):
+        # print(DATA_PATH)
         print(activity)  
         
         accel_data = pd.read_excel(os.path.join(DATA_PATH, activity, "accelerometer.xlsx"))
