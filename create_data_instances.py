@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def raw_data(raw_accel_data, raw_gyro_data):
+def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
 
     """
     combine the accelerometer and gyroscope data for activities and resampling to a frequency of every 100ms
@@ -20,8 +20,16 @@ def raw_data(raw_accel_data, raw_gyro_data):
         columns=["timestamp", "label", "ax", "ay", "az", "gx", "gy", "gz"]
     )
 
+    CURRENT_PATH = os.getcwd()
+    LABEL_PATH = os.path.join(CURRENT_PATH, "data_instances", activity)
+    if not os.path.exists(LABEL_PATH):
+        os.makedirs(LABEL_PATH)
+
+    instance_num = 1
+
     # get individual recordings and loop over them
     session_id = raw_accel_data["session_id"].unique()
+
     for i in range(len(session_id)):
 
         current_session_id = session_id[i]
@@ -71,6 +79,17 @@ def raw_data(raw_accel_data, raw_gyro_data):
         result = result.drop(result.index[range(20)]).reset_index(drop=True)
         result = result[:len(result)-20]
 
+
+        for j in range(0, len(result), segment_size):
+            print(j, j+segment_size)
+            segment = result.iloc[j:j+segment_size]
+
+            segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
+            instance_num += 1
+
+        print("session finished " + str(i))
+        print("***************************")
+
         # print(result)
 
         # print(combined_data)
@@ -82,60 +101,9 @@ def raw_data(raw_accel_data, raw_gyro_data):
         # print(result)
         # print(np.array(result))
 
-    produce_graph_for_interpolated_data(combined_data)
-
-    print(combined_data)
+    # print(combined_data)
 
     # combined_data.to_csv('./combined_data.csv', index = False)
-
-
-def produce_graph_for_interpolated_data(df):
-
-    """
-    Produce graphs that plot the accelerometer and gyroscope data for activities once sensors have been combined,
-    frequency has been resampled to 100ms
-
-    """
-
-    fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1, figsize=(8, 8))
-
-    ax1.plot(df["timestamp"], df["ax"])
-    ax2.plot(df["timestamp"], df["ay"])
-    ax3.plot(df["timestamp"], df["az"])
-
-    ax1.set_ylabel("Accelerometer X")
-    ax2.set_ylabel("Accelerometer Y")
-    ax3.set_ylabel("Accelerometer Z")
-    fig.suptitle("Accelerometer Data")
-
-    fig, (ax4, ax5, ax6) = plt.subplots(nrows=3, ncols=1, figsize=(8, 8))
-
-    ax4.plot(df["timestamp"], df["gx"])
-    ax5.plot(df["timestamp"], df["gy"])
-    ax6.plot(df["timestamp"], df["gz"])
-
-    ax4.set_ylabel("Gyroscope X")
-    ax5.set_ylabel("Gyroscope Y")
-    ax6.set_ylabel("Gyroscope Z")
-    fig.suptitle("Gyroscope Data")
-
-    plt.show()
-
-
-def produce_raw_data_graph(df, sensor):
-
-    fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1, figsize=(8, 8))
-
-    ax1.plot(df["timestamp"], df["x"])
-    ax2.plot(df["timestamp"], df["y"])
-    ax3.plot(df["timestamp"], df["z"])
-
-    ax1.set_ylabel("X axis")
-    ax2.set_ylabel("Y axis")
-    ax3.set_ylabel("Z axis")
-    fig.suptitle(f"{sensor} Data")
-
-    plt.show()
 
 
 def main():
@@ -143,13 +111,19 @@ def main():
     CURRENT_PATH = os.getcwd()
     DATA_PATH = os.path.join(CURRENT_PATH, "data")
 
-    accel_data = pd.read_excel(os.path.join(DATA_PATH, "accelerometer.xlsx"))
-    gyro_data = pd.read_excel(os.path.join(DATA_PATH, "gyroscope.xlsx"))
 
-    # produce_raw_data_graph(accel_data, "Accelerometer")
-    # produce_raw_data_graph(gyro_data, "Gyroscope")
+    CURRENT_PATH = os.getcwd()
+    DATA_PATH = os.path.join(CURRENT_PATH, "data")
+    DATA_INSTANCE_PATH = os.path.join(CURRENT_PATH, "data_instances")
+    if not os.path.exists(DATA_INSTANCE_PATH):
+        os.makedirs(DATA_INSTANCE_PATH)
 
-    raw_data(accel_data, gyro_data)
+    for activity in os.listdir(DATA_PATH):
+        print(activity)  
+        
+        accel_data = pd.read_excel(os.path.join(DATA_PATH, activity, "accelerometer.xlsx"))
+        gyro_data = pd.read_excel(os.path.join(DATA_PATH, activity, "gyroscope.xlsx"))
+        raw_data(accel_data, gyro_data, activity, 20)
 
 
 if __name__ == "__main__":
