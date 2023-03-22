@@ -84,7 +84,7 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
             print(j, j+segment_size)
             segment = result.iloc[j:j+segment_size]
 
-            if np.shape(segment) == (20, 8):
+            if np.shape(segment) == (segment_size, 8):
                 segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
                 instance_num += 1
 
