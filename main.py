@@ -1,7 +1,7 @@
 import os
 from sktime.datasets import load_from_tsfile
 import numpy as np
-from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, balanced_accuracy_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
@@ -41,6 +41,7 @@ def ten_cross_validation(clf, X, y):
     plt.title("10 fold cross validation")
     plt.savefig('./confusion_matrix.png')
     print(accuracy_score(y_true, y_pred))
+    print(balanced_accuracy_score(y_true, y_pred))
 
 
 if __name__ == "__main__":
@@ -56,5 +57,5 @@ if __name__ == "__main__":
     # knn_classifier = KNeighborsTimeSeriesClassifier(distance='dtw')
     # ten_cross_validation(knn_classifier, X, y)
     
-    rocket_classifier = RocketClassifier(num_kernels=1000)
+    rocket_classifier = RocketClassifier(num_kernels=1500)
     ten_cross_validation(rocket_classifier, X, y)

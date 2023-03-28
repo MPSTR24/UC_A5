@@ -111,10 +111,6 @@ def main():
 
     CURRENT_PATH = os.getcwd()
     DATA_PATH = os.path.join(CURRENT_PATH, "data")
-
-
-    CURRENT_PATH = os.getcwd()
-    DATA_PATH = os.path.join(CURRENT_PATH, "data")
     DATA_INSTANCE_PATH = os.path.join(CURRENT_PATH, "data_instances")
     if not os.path.exists(DATA_INSTANCE_PATH):
         os.makedirs(DATA_INSTANCE_PATH)
