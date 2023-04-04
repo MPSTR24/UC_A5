@@ -22,7 +22,16 @@ def main():
 
             data_instance = pd.read_excel(os.path.join(CURRENT_ACIVITY, recording, "data_selected.xlsx"))
 
-            if np.shape(data_instance) == (20, 8):
+
+            timestamps = data_instance['timestamp']
+
+            data_instance = data_instance.drop(columns=['timestamp', 'label'])
+
+            data_instance = (data_instance-data_instance.min())/(data_instance.max()-data_instance.min())
+
+            data_instance.insert(loc=0, column='timestamp', value=timestamps)
+
+            if np.shape(data_instance) == (20, 7):
                 data_instance.to_csv(f'./data_instances/{activity}/{activity}_{instance_num}.csv', index = False)
                 instance_num += 1
 

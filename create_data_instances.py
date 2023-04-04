@@ -80,11 +80,19 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
         result = result[:len(result)-20]
 
 
+        result = result.drop(columns=['timestamp', 'label'])
+
+        result = (result-result.min())/(result.max()-result.min())
+
+
+
         for j in range(0, len(result), segment_size):
             print(j, j+segment_size)
-            segment = result.iloc[j:j+segment_size]
+            segment = result.iloc[j:j+segment_size].reset_index(drop=True)
 
-            if np.shape(segment) == (segment_size, 8):
+            if np.shape(segment) == (segment_size, 6):
+                segment.insert(loc=0, column='timestamp', value=np.arange(0, 2000, 100))
+                print(segment)
                 segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
                 instance_num += 1
 
