@@ -67,16 +67,15 @@ def raw_data(raw_accel_data, raw_gyro_data):
             [combined_timestamps, data_label, interpolated_values], axis=1
         )
 
-
         result = result.drop(result.index[range(20)]).reset_index(drop=True)
-        result = result[:len(result)-20]
+        result = result[: len(result) - 20]
 
         # print(result)
 
         # print(combined_data)
         combined_data = pd.concat([combined_data, result], ignore_index=True)
-        
-        combined_data['timestamp'] = np.arange(0, (len(combined_data))*100, 100)
+
+        combined_data["timestamp"] = np.arange(0, (len(combined_data)) * 100, 100)
         # print(np.shape(timestamps))
 
         # print(result)

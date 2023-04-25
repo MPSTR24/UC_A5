@@ -75,17 +75,18 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
             [combined_timestamps, data_label, interpolated_values], axis=1
         )
 
-
         result = result.drop(result.index[range(20)]).reset_index(drop=True)
-        result = result[:len(result)-20]
-
+        result = result[: len(result) - 20]
 
         for j in range(0, len(result), segment_size):
-            print(j, j+segment_size)
-            segment = result.iloc[j:j+segment_size]
+            print(j, j + segment_size)
+            segment = result.iloc[j : j + segment_size]
 
             if np.shape(segment) == (segment_size, 8):
-                segment.to_csv(f'./data_instances/{label[0]}/{label[0]}_{instance_num}.csv', index = False)
+                segment.to_csv(
+                    f"./data_instances/{label[0]}/{label[0]}_{instance_num}.csv",
+                    index=False,
+                )
                 instance_num += 1
 
         print("session finished " + str(i))
@@ -95,8 +96,8 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
 
         # print(combined_data)
         combined_data = pd.concat([combined_data, result], ignore_index=True)
-        
-        combined_data['timestamp'] = np.arange(0, (len(combined_data))*100, 100)
+
+        combined_data["timestamp"] = np.arange(0, (len(combined_data)) * 100, 100)
         # print(np.shape(timestamps))
 
         # print(result)
@@ -117,9 +118,11 @@ def main():
 
     for activity in os.listdir(DATA_PATH):
         # print(DATA_PATH)
-        print(activity)  
-        
-        accel_data = pd.read_excel(os.path.join(DATA_PATH, activity, "accelerometer.xlsx"))
+        print(activity)
+
+        accel_data = pd.read_excel(
+            os.path.join(DATA_PATH, activity, "accelerometer.xlsx")
+        )
         gyro_data = pd.read_excel(os.path.join(DATA_PATH, activity, "gyroscope.xlsx"))
         raw_data(accel_data, gyro_data, activity, 20)
 
