@@ -59,7 +59,4 @@ class ntfy:
 
 # "Actions": "view, Open location, " + google_url + ", clear=true;",
 
-notify = ntfy()
-for i in range(10):
-    time.sleep(60)
-    notify.notify("Hello")
+

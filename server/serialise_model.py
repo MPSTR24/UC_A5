@@ -16,8 +16,7 @@ def main():
 
     DATASET_PATH = os.path.join(
         ROOT_DIR,
-        "Data",
-        "datasets",
+        "dataset",
         "safety_recognition" "safety_recognition.ts",
     )
 

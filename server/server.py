@@ -3,7 +3,7 @@ import json
 import os
 import numpy as np
 import pickle
-from ntfy import notify
+from ntfy import ntfy
 
 app = Flask(__name__)
 
@@ -11,19 +11,18 @@ ROOT_DIR = os.getcwd()
 
 rocket_classifier = pickle.load(open("./rocket_model.pkl", "rb"))
 
-notify = notify()
+notify = ntfy()
 
 @app.route('/test_predict', methods=['POST'])
 
 def test_predict():
-    print("heymate")
     data = request.get_json()
 
     data = np.array(data)
 
     prediction = rocket_classifier.predict(data)
 
-    notify.notify(prediction)
+    notify.notify(prediction[0])
 
 
     print(prediction)
