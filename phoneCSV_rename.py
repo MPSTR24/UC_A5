@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def main():
 
     CURRENT_PATH = os.getcwd()
@@ -20,15 +21,16 @@ def main():
 
         for recording in os.listdir(CURRENT_ACIVITY):
 
-            data_instance = pd.read_excel(os.path.join(CURRENT_ACIVITY, recording, "data_selected.xlsx"))
+            data_instance = pd.read_excel(
+                os.path.join(CURRENT_ACIVITY, recording, "data_selected.xlsx")
+            )
 
             if np.shape(data_instance) == (20, 8):
-                data_instance.to_csv(f'./data_instances/{activity}/{activity}_{instance_num}.csv', index = False)
+                data_instance.to_csv(
+                    f"./data_instances/{activity}/{activity}_{instance_num}.csv",
+                    index=False,
+                )
                 instance_num += 1
-
-
-
-        
 
 
 if __name__ == "__main__":
