@@ -38,7 +38,7 @@ def create_dataset(path_to_save):
     # """ get the unique class labels """
     class_labels = set(y)
 
-    write_ndarray_to_tsfile(data=X, path=f'{path_to_save}', problem_name="saftey_recognition", class_label=class_labels,
+    write_ndarray_to_tsfile(data=X, path=f'{path_to_save}', problem_name="safety_recognition", class_label=class_labels,
     class_value_list=y, equal_length=True, series_length=100)
 
 

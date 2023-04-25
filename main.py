@@ -47,7 +47,7 @@ def ten_cross_validation(clf, X, y):
 if __name__ == "__main__":
     
     CURRENT_PATH = os.getcwd()
-    DATASET_PATH = os.path.join(CURRENT_PATH, "dataset", "saftey_recognition", "saftey_recognition.ts")
+    DATASET_PATH = os.path.join(CURRENT_PATH, "dataset", "safety_recognition", "safety_recognition.ts")
 
     X, y = load_from_tsfile(DATASET_PATH)
 
@@ -57,5 +57,5 @@ if __name__ == "__main__":
     # knn_classifier = KNeighborsTimeSeriesClassifier(distance='dtw')
     # ten_cross_validation(knn_classifier, X, y)
     
-    rocket_classifier = RocketClassifier(num_kernels=10000, rocket_transform="minirocket")
+    rocket_classifier = RocketClassifier(num_kernels=10000, rocket_transform="minirocket", )
     ten_cross_validation(rocket_classifier, X, y)
