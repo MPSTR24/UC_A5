@@ -57,5 +57,5 @@ if __name__ == "__main__":
     # knn_classifier = KNeighborsTimeSeriesClassifier(distance='dtw')
     # ten_cross_validation(knn_classifier, X, y)
     
-    rocket_classifier = RocketClassifier(num_kernels=10000, rocket_transform="minirocket", )
+    rocket_classifier = RocketClassifier(num_kernels=10000, rocket_transform="minirocket")
     ten_cross_validation(rocket_classifier, X, y)
