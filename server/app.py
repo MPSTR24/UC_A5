@@ -20,6 +20,8 @@ def test_predict():
 
     data = np.array(data)
 
+    print(data)
+
     prediction = rocket_classifier.predict(data)
 
     notify.notify(prediction[0])
@@ -36,17 +38,19 @@ def test_predict():
 def predict():
     data = request.get_json()
 
-    data = np.array(data)
-
-    sensor_data = data[0:len(data)-1]
+    sensor_data = np.array(data[0:len(data)-1])
+    sensor_data = np.array([np.array(axis_data) for axis_data in sensor_data])
+    # print(sensor_data)
 
     user_data = data[-1]
 
 
-    # prediction = rocket_classifier.predict(sensor_data)
+    prediction = rocket_classifier.predict(np.array([sensor_data]))
 
-    print(sensor_data)
-    # print(prediction)
+    # print(sensor_data)
+    # print(np.shape(sensor_data))
+    # print(user_data)
+    print(prediction)
 
     # response = [prediction[0], prediction_probabilties[0]]
 
