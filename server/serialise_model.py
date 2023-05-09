@@ -17,7 +17,7 @@ def main():
     DATASET_PATH = os.path.join(
         ROOT_DIR,
         "dataset",
-        "safety_recognition" "safety_recognition.ts",
+        "safety_recognition", "safety_recognition.ts",
     )
 
     rocket_classifier = RocketClassifier(num_kernels=10000, rocket_transform="minirocket")
@@ -26,7 +26,7 @@ def main():
 
     rocket_classifier.fit(X, y)
 
-    # pickle.dump(rocket_classifier, open("./server/rocket_model.pkl", "wb"))
+    pickle.dump(rocket_classifier, open("./server/rocket_model.pkl", "wb"))
 
 
 if __name__ == "__main__":
