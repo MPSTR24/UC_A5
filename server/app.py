@@ -47,6 +47,12 @@ def predict():
 
     prediction = rocket_classifier.predict(np.array([sensor_data]))
 
+    danger = ['falling', 'walkingtorunning', 'struggle']
+
+    if prediction in danger:
+        notify.notify(prediction[0], user_data)
+
+
     # print(sensor_data)
     # print(np.shape(sensor_data))
     # print(user_data)

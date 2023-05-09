@@ -8,7 +8,7 @@ class ntfy:
         self.topic = "a5_topic_4848rurirjfuurir"
         self.url = "https://ntfy.sh/"
 
-    def notify(self, activity):
+    def notify(self, activity, user_data):
         """Send a notification to the client.
 
         :param message: The message to send to the client.
@@ -20,10 +20,10 @@ class ntfy:
         priority = "urgent"
         tags = "warning"
 
-        user = "Harry"
+        user = user_data[0]
 
-        location_lat = "52.62177164741303"
-        location_long = "1.2336131749025374"
+        location_lat = user_data[1]
+        location_long = user_data[2]
 
         google_url = (
             "https://www.google.com/maps/search/?api=1&query="
