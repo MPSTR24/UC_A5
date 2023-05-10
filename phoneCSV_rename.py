@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+time_interval = 30
 
 def main():
 
@@ -24,8 +25,14 @@ def main():
             data_instance = pd.read_excel(
                 os.path.join(CURRENT_ACIVITY, recording, "data_selected.xlsx")
             )
+            
+            data_instance = data_instance.drop(columns=["timestamp", "label"])
+            
+            data_instance_min = np.min(data_instance)
+            data_instance_max = np.max(data_instance)
+            data_instance = 2 * (data_instance - data_instance_min) / (data_instance_max - data_instance_min) - 1
 
-            if np.shape(data_instance) == (20, 8):
+            if np.shape(data_instance) == (time_interval, 6):
                 data_instance.to_csv(
                     f"./data_instances/{activity}/{activity}_{instance_num}.csv",
                     index=False,

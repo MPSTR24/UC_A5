@@ -42,15 +42,26 @@ def predict():
     sensor_data = np.array([np.array(axis_data) for axis_data in sensor_data])
     # print(sensor_data)
 
-    user_data = data[-1]
+    # Normalize the data between -1 and 1
+    sensor_data_min = np.min(sensor_data)
+    sensor_data_max = np.max(sensor_data)
+    sensor_data = 2 * (sensor_data - sensor_data_min) / (sensor_data_max - sensor_data_min) - 1
 
+    # print(sensor_data)
+
+    user_data = data[-1]
 
     prediction = rocket_classifier.predict(np.array([sensor_data]))
 
+    if prediction == "stationary":
+        prediction = "falling"
+    elif prediction == "falling":
+        prediction = "stationary"
+
     danger = ['falling', 'walkingtorunning', 'struggle']
 
-    if prediction in danger:
-        notify.notify(prediction[0], user_data)
+    # if prediction in danger:
+    #     notify.notify(prediction[0], user_data)
 
 
     # print(sensor_data)

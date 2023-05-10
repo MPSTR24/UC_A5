@@ -21,7 +21,7 @@ def create_dataset(path_to_save):
             data_instance = pd.read_csv(
                 os.path.join(current_activity_directory, data_instance)
             )
-            data_instance = data_instance.drop(columns=["timestamp", "label"])
+            # data_instance = data_instance.drop(columns=["timestamp", "label"])
             data_instance = np.transpose(data_instance)
 
             X.append(data_instance)

@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+time_interval = 30
 
 def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
 
@@ -77,12 +78,18 @@ def raw_data(raw_accel_data, raw_gyro_data, activity, segment_size):
 
         result = result.drop(result.index[range(20)]).reset_index(drop=True)
         result = result[: len(result) - 20]
+        
+        result = result.drop(columns=["timestamp", "label"])
+        
+        result_min = np.min(result)
+        result_max = np.max(result)
+        result = 2 * (result - result_min) / (result_max - result_min) - 1
 
         for j in range(0, len(result), segment_size):
             print(j, j + segment_size)
             segment = result.iloc[j : j + segment_size]
 
-            if np.shape(segment) == (segment_size, 8):
+            if np.shape(segment) == (segment_size, 6):
                 segment.to_csv(
                     f"./data_instances/{label[0]}/{label[0]}_{instance_num}.csv",
                     index=False,
@@ -124,7 +131,7 @@ def main():
             os.path.join(DATA_PATH, activity, "accelerometer.xlsx")
         )
         gyro_data = pd.read_excel(os.path.join(DATA_PATH, activity, "gyroscope.xlsx"))
-        raw_data(accel_data, gyro_data, activity, 20)
+        raw_data(accel_data, gyro_data, activity, time_interval)
 
 
 if __name__ == "__main__":
