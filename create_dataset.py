@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import os
-from sktime.datasets._data_io import write_ndarray_to_tsfile
+from sktime.datasets._data_io import write_ndarray_to_tsfile, write_tabular_transformation_to_arff
+from sktime.transformations.panel.reduce import Tabularizer
 
 
 def create_dataset(path_to_save):
@@ -45,6 +46,17 @@ def create_dataset(path_to_save):
         equal_length=True,
         series_length=100,
     )
+
+    
+    write_tabular_transformation_to_arff(
+        data=X,
+        path=f"{path_to_save}",
+        problem_name="safety_recognition",
+        class_label=class_labels,
+        class_value_list=y,
+        transformation=Tabularizer()
+    )
+
 
 
 def main():
