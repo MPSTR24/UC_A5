@@ -1,20 +1,13 @@
 package safetyApp;
-import experiments.ClassifierLists;
-import experiments.data.DatasetLoading;
 import tsml.classifiers.interval_based.TSF;
 import tsml.classifiers.kernel_based.ROCKETClassifier;
 import tsml.classifiers.legacy.elastic_ensemble.DTW1NN;
-import tsml.data_containers.TimeSeries;
-import tsml.data_containers.TimeSeriesInstance;
-import tsml.data_containers.TimeSeriesInstances;
-import tsml.data_containers.utilities.TimeSeriesResampler;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
-import weka.core.converters.ConverterUtils.DataSource;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -31,17 +24,9 @@ public class cv_fold {
 
         try {
 
-        Instances train;
-        int seed = 0;
-
-        // Load the dataset
-        DataSource source = new DataSource(basePath + dataPath);
-        Instances data = source.getDataSet();
-
-        if (data.classIndex() == -1)
+            // Load the dataset
+            Instances data = new Instances(new FileReader(basePath+dataPath));
             data.setClassIndex(data.numAttributes() - 1);
-
-
 
             // Perform cross-validation
             Evaluation eval = new Evaluation(data);
@@ -69,11 +54,8 @@ public class cv_fold {
             String modelBasePath = "src/main/java/safetyApp/model/";
 
             // Load the dataset
-            DataSource source = new DataSource(basePath + dataPath);
-            Instances data = source.getDataSet();
-
-            if (data.classIndex() == -1)
-                data.setClassIndex(data.numAttributes() - 1);
+            Instances data = new Instances(new FileReader(basePath+dataPath));
+            data.setClassIndex(data.numAttributes() - 1);
 
 
             clf.buildClassifier(data);
@@ -89,10 +71,11 @@ public class cv_fold {
         }
     }
 
-    public static Classifier deserialiseModel(String modelName) {
+    public static void deserialiseModel(String modelName) {
         String basePath = "./src/main/java/safetyApp/data/safety_recognition/";
         String modelBasePath = "src/main/java/safetyApp/model/";
         try {
+
             // Deserialize the classifier from a file
             Classifier clf = (Classifier) SerializationHelper.read(modelBasePath+modelName);
             System.out.println("Classifier deserialized successfully.");
@@ -108,13 +91,8 @@ public class cv_fold {
                 double prediction = clf.classifyInstance(instance);
                 System.out.println("Instance " + i + ": Predicted class = " + testInstances.classAttribute().value((int) prediction));
             }
-
-
-            return clf;
         } catch (Exception e) {
             e.printStackTrace();
-
-            return null;
         }
 
     }
@@ -136,25 +114,11 @@ public class cv_fold {
 //        runEvaluation("safety_recognition.arff", tsf, "TSF_results.txt");
 //        runEvaluation("safety_recognition.arff", knn, "DTW_results.txt");
 //        runEvaluation("safety_recognition.arff", rocket, "ROCKET_results.txt");
-
-        serialiseModel(rocket, "safety_recognition.arff", "rocket.model");
-        serialiseModel(tsf, "safety_recognition.arff", "tsf.model");
 //
-//        Classifier rocketLoaded = deserialiseModel("rocket.model");
+//        serialiseModel(rocket, "safety_recognition.arff", "rocket.model");
+//        serialiseModel(tsf, "safety_recognition.arff", "tsf.model");
 
-
-//        // Load the test instances
-//        Instances testInstances = new Instances(new FileReader("path/to/your/test.arff"));
-//        testInstances.setClassIndex(testInstances.numAttributes() - 1);
-//
-//        // Make predictions on test instances
-//        for (int i = 0; i < testInstances.numInstances(); i++) {
-//            Instance instance = testInstances.instance(i);
-//            double prediction = classifier.classifyInstance(instance);
-//            System.out.println("Instance " + i + ": Predicted class = " + testInstances.classAttribute().value((int) prediction));
-//        }
-//
-
+        deserialiseModel("tsf.model");
 
 
     }
