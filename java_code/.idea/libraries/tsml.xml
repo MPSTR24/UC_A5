@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="tsml">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/tsml.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/tsml.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/tsml.jar!/" />
+    </SOURCES>
+  </library>
+</component>
