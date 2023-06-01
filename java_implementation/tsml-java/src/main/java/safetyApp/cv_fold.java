@@ -17,6 +17,7 @@ import weka.core.SerializationHelper;
 import weka.core.converters.ConverterUtils.DataSource;
 
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -89,13 +90,25 @@ public class cv_fold {
     }
 
     public static Classifier deserialiseModel(String modelName) {
+        String basePath = "./src/main/java/safetyApp/data/safety_recognition/";
         String modelBasePath = "src/main/java/safetyApp/model/";
         try {
             // Deserialize the classifier from a file
             Classifier clf = (Classifier) SerializationHelper.read(modelBasePath+modelName);
-
-
             System.out.println("Classifier deserialized successfully.");
+
+
+            // Load the test instances
+            Instances testInstances = new Instances(new FileReader(basePath+"safety_recognition.arff"));
+            testInstances.setClassIndex(testInstances.numAttributes() - 1);
+
+            // Make predictions on test instances
+            for (int i = 0; i < testInstances.numInstances(); i++) {
+                Instance instance = testInstances.instance(i);
+                double prediction = clf.classifyInstance(instance);
+                System.out.println("Instance " + i + ": Predicted class = " + testInstances.classAttribute().value((int) prediction));
+            }
+
 
             return clf;
         } catch (Exception e) {
@@ -121,11 +134,11 @@ public class cv_fold {
 
 //        runEvaluation("safety_recognition.arff", rf, "RF_results.txt");
 //        runEvaluation("safety_recognition.arff", tsf, "TSF_results.txt");
-        runEvaluation("safety_recognition.arff", knn, "DTW_results.txt");
+//        runEvaluation("safety_recognition.arff", knn, "DTW_results.txt");
 //        runEvaluation("safety_recognition.arff", rocket, "ROCKET_results.txt");
 
-//        serialiseModel(rocket, "safety_recognition.arff", "rocket.model");
-//        serialiseModel(tsf, "safety_recognition.arff", "tsf.model");
+        serialiseModel(rocket, "safety_recognition.arff", "rocket.model");
+        serialiseModel(tsf, "safety_recognition.arff", "tsf.model");
 //
 //        Classifier rocketLoaded = deserialiseModel("rocket.model");
 
