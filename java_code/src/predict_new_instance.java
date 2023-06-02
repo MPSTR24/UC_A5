@@ -32,15 +32,12 @@ public class predict_new_instance {
             Random rand = new Random();
 
             ArrayList<Attribute> attributes = new ArrayList<>();
-
             for (int i = 0; i < 120; i++) {
                 Attribute attribute = new Attribute("att" + i);
                 attributes.add(attribute);
             }
-
             Instance instance = new DenseInstance(attributes.size());
 
-            // Assuming your ArrayList is called 'dataList' and contains the attribute values
             for (int i = 0; i < attributes.size(); i++) {
                 instance.setValue(i, rand.nextFloat());
             }
