@@ -1,3 +1,5 @@
+package safetyApp;
+
 import weka.classifiers.Classifier;
 import weka.core.*;
 
@@ -7,7 +9,7 @@ import java.util.Random;
 
 public class predict_new_instance {
 
-    public static void deserialiseModel(String modelName) {
+    public static void practice_predict(String modelName) {
         String basePath = "./src/safetyApp/data/safety_recognition/";
         String modelBasePath = "src/safetyApp/model/";
         try {
@@ -15,19 +17,6 @@ public class predict_new_instance {
             // Deserialize the classifier from a file
             Classifier clf = (Classifier) SerializationHelper.read(modelBasePath+modelName);
             System.out.println("Classifier deserialized successfully.");
-
-
-            // Load the test instances
-//            Instances testInstances = new Instances(new FileReader(basePath+"safety_recognition.arff"));
-//            testInstances.setClassIndex(testInstances.numAttributes() - 1);
-//
-//            // Make predictions on test instances
-//            for (int i = 0; i < testInstances.numInstances(); i++) {
-//                Instance instance = testInstances.instance(i);
-//                System.out.println(instance.attribute(2));
-//                double prediction = clf.classifyInstance(instance);
-//                System.out.println("Instance " + i + ": Predicted class = " + testInstances.classAttribute().value((int) prediction));
-//            }
 
             Random rand = new Random();
 
@@ -64,6 +53,6 @@ public class predict_new_instance {
 
     public static void main(String[] args) {
 
-        deserialiseModel("tsf.model");
+        practice_predict("tsf.model");
     }
 }
